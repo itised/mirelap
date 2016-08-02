@@ -1,4 +1,4 @@
-<?php namespace Ipatser\Providers;
+<?php namespace Mirelap\Providers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
