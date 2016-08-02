@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
-use Ipatser\Http\Transformers\TransformerFactory;
+use Mirelap\Http\Transformers\TransformerFactory;
 
 class TransformerServiceProvider extends ServiceProvider
 {
