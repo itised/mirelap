@@ -7,7 +7,7 @@ class MirelapServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '../../config/mirelap.php' => config_path('mirelap.php')
+            __DIR__ . '/../../config/mirelap.php' => config_path('mirelap.php')
         ], 'config');
     }
 
