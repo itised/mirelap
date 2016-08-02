@@ -8,7 +8,7 @@ class MirelapServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '../../config/mirelap.php' => config_path('mirelap.php')
-        ]);
+        ], 'config');
     }
 
     /**
