@@ -127,4 +127,17 @@ class HandlerTest extends PHPUnit_Framework_TestCase
         $json = $this->checkErrorResponse($response, $statusCode);
         $this->assertEquals(sprintf('%d %s', $statusCode, Response::$statusTexts[$statusCode]), $json['message']);
     }
+
+    public function testResourceConflictException()
+    {
+        $submitted = ['id' => 1, 'name' => 'first', 'updated_at' => '2000-01-01 00:00:00'];
+        $current = ['id' => 1, 'name' => 'second', 'updated_at' => '2000-01-01 00:00:01'];
+
+        $exception = new ResourceConflictException($submitted, $current);
+        $response = $this->handler->render($this->request, $exception);
+
+        $json = $this->checkErrorResponse($response, 409);
+        $this->assertEquals($submitted, $json['submitted']);
+        $this->assertEquals($current, $json['current']);
+    }
 }

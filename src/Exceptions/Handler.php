@@ -78,6 +78,11 @@ class Handler implements ExceptionHandler
             $response['errors'] = $e->getErrors();
         }
 
+        if ($e instanceof ResourceConflictExceptionInterface) {
+            $response['submitted'] = $e->getSubmittedResource();
+            $response['current'] = $e->getCurrentResource();
+        }
+
         if ($code = $e->getCode()) {
             $response['code'] = $code;
         }
