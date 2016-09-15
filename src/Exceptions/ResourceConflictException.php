@@ -20,8 +20,6 @@ class ResourceConflictException extends HttpException implements ResourceConflic
      * @param Exception $previous
      * @param array $headers
      * @param int $code
-     *
-     * @internal param null $oldResource
      */
     public function __construct(array $submittedResource, array $currentResource, string $message = null, Exception $previous = null, $headers = [], $code = 0)
     {
