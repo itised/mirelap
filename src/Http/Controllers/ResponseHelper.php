@@ -1,6 +1,7 @@
 <?php namespace Mirelap\Http\Controllers;
 
 use ErrorException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Mirelap\Exceptions\ModelConflictException;
 use Mirelap\Exceptions\ResourceConflictException;
@@ -10,6 +11,7 @@ use Mirelap\Http\Response\Updated;
 use Mirelap\Http\Transformers\TransformerAbstract;
 use Mirelap\Http\Transformers\TransformerFactory;
 use Mirelap\Resources\EloquentModel;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait ResponseHelper
 {
@@ -28,6 +30,15 @@ trait ResponseHelper
     {
         $transformer = $this->transformer($transformerClass);
         return $transformer->transform($model);
+    }
+
+    protected function findOrFail(EloquentModel $model, $id) : EloquentModel
+    {
+        try {
+            return $model->findOrFail($id);
+        } catch (ModelNotFoundException $exception) {
+            throw new NotFoundHttpException("No record with 'id' = '${id}' exists'");
+        }
     }
 
     protected function updateResource(Request $request, EloquentModel $updated, string $transformerClass, array $headers = []) : Updated
