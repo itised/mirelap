@@ -38,7 +38,11 @@ trait ResponseHelper
                 throw new UpdateResourceFailedException('The resource could not be saved');
             }
         } catch (ModelConflictException $exception) {
-            throw new ResourceConflictException($request->all(), $this->transform($transformerClass, $exception->getCurrent()), $exception->getMessage());
+            throw new ResourceConflictException(
+                $this->transform($transformerClass, $exception->getUpdate()),
+                $this->transform($transformerClass, $exception->getCurrent()),
+                $exception->getMessage()
+            );
         }
 
         return $this->response()->updated($updated, $transformerClass, $headers);

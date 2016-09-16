@@ -38,4 +38,16 @@ class ResourceConflictException extends HttpException implements ResourceConflic
     {
         return $this->currentResource;
     }
+
+    public function getChangedFields() : array
+    {
+        $changedFields = [];
+        foreach ($this->submittedResource as $field => $value) {
+            if ($this->currentResource[$field] !== $value) {
+                $changedFields[] = $field;
+            }
+        }
+
+        return $changedFields;
+    }
 }

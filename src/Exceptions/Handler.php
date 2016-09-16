@@ -81,6 +81,7 @@ class Handler implements ExceptionHandler
         if ($e instanceof ResourceConflictExceptionInterface) {
             $response['submitted'] = $e->getSubmittedResource();
             $response['current'] = $e->getCurrentResource();
+            $response['changed'] = $e->getChangedFields();
         }
 
         if ($code = $e->getCode()) {
