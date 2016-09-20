@@ -41,7 +41,7 @@ trait ResponseHelper
         }
     }
 
-    protected function updateResource(Request $request, EloquentModel $updated, string $transformerClass, array $headers = []) : Updated
+    protected function updateResource(EloquentModel $updated, string $transformerClass, array $headers = []) : Updated
     {
         try {
             if (!$updated->save()) {
