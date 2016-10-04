@@ -1,6 +1,7 @@
 <?php namespace Mirelap\Http\Controllers;
 
 use ErrorException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Mirelap\Exceptions\ModelConflictException;
@@ -39,6 +40,29 @@ trait ResponseHelper
         } catch (ModelNotFoundException $exception) {
             throw new NotFoundHttpException("No record with 'id' = '${id}' exists'");
         }
+    }
+
+    protected function addQueryTerm(Request $request, Builder $query)
+    {
+        if ($request->has('query')) {
+            return $query->search($request->get('query'));
+        }
+
+        return $query;
+    }
+
+    protected function getCollection(Request $request, Builder $query)
+    {
+        if ($request->has('pageSize')) {
+            return $query->paginate($request->get('pageSize'), ['*'], 'page', $request->get('pageNumber', 1));
+        } else {
+            return $query->get();
+        }
+    }
+
+    protected function getFilteredCollection(Request $request, Builder $query)
+    {
+        return $this->getCollection($request, $this->addQueryTerm($request, $query));
     }
 
     protected function updateResource(EloquentModel $updated, string $transformerClass, array $headers = []) : Updated

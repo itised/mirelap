@@ -1,5 +1,6 @@
 <?php namespace Mirelap\Resources;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Mirelap\Exceptions\ModelConflictException;
 
@@ -10,6 +11,9 @@ use Mirelap\Exceptions\ModelConflictException;
  */
 abstract class EloquentModel extends Model
 {
+
+    abstract public function scopeSearch(Builder $query, $term);
+
     public function findByField($field, $value)
     {
         return $this->where($field, $value)->firstOrFail();
