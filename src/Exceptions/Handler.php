@@ -2,7 +2,7 @@
 
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Http\Response;
+use Mirelap\Http\Response\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class Handler implements ExceptionHandler
