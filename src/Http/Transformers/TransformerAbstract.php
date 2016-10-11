@@ -10,6 +10,14 @@ abstract class TransformerAbstract
     protected $availableIncludes = [];
     protected $defaultIncludes = [];
 
+    /** @var string */
+    private $depth;
+
+    public function __construct(string $depth = null)
+    {
+        $this->depth = $depth;
+    }
+
     public abstract function transform($item) : array;
 
     public function setRequest(Request $request)
@@ -23,8 +31,9 @@ abstract class TransformerAbstract
         $data = $this->transform($item);
 
         foreach ($includes as $include) {
+            $depth = ($this->depth === null ? '' : $this->depth . '.') . $include;
             $includeFunction = 'include' . ucfirst($include);
-            $data[$include] = $this->$includeFunction($item);
+            $data[$include] = $this->$includeFunction($item, $depth);
         }
 
         return $data;
@@ -45,9 +54,25 @@ abstract class TransformerAbstract
         $includes = $this->getRequestParameterArray('include');
         $excludes = $this->getRequestParameterArray('exclude');
 
+        if ($this->depth !== null) {
+            $includes = $this->parseIncludes($includes);
+            $excludes = $this->parseIncludes($excludes);
+        }
+
         $included = array_merge($this->getDefaultIncludes(), array_intersect($this->getAvailableIncludes(), $includes));
 
         return array_diff($included, $excludes);
+    }
+
+    protected function parseIncludes(array $includes) : array
+    {
+        $depth = $this->depth .= '.';
+
+        return collect($includes)->filter(function($include) use ($depth) {
+            return starts_with($include, $depth);
+        })->map(function($include) use ($depth) {
+            return substr($include, strlen($depth));
+        })->toArray();
     }
 
     protected function getRequestParameterArray($name, $delimiter = ',') : array
