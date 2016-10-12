@@ -6,8 +6,9 @@ use Mirelap\Exceptions\ModelConflictException;
 
 /**
  * Class EloquentModel
- * 
+ *
  * @method EloquentModel findOrFail($id)
+ * @method EloquentModel search($term)
  */
 abstract class EloquentModel extends Model
 {
