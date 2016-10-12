@@ -37,4 +37,19 @@ abstract class EloquentModel extends Model
     {
         return self::find($this->id);
     }
+
+    protected function floatVal($attribute)
+    {
+        return $this->attributes[$attribute] === null ? null : floatval($this->attributes[$attribute]);
+    }
+
+    protected function intVal($attribute)
+    {
+        return $this->attributes[$attribute] === null ? null : intval($this->attributes[$attribute]);
+    }
+
+    protected function boolVal($attribute)
+    {
+        return $this->attributes[$attribute] === null ? null : $this->attributes[$attribute] !== '0';
+    }
 }
