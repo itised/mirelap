@@ -11,7 +11,7 @@ use Mirelap\Http\Response\ResponseFactory;
 use Mirelap\Http\Response\Updated;
 use Mirelap\Http\Transformers\TransformerAbstract;
 use Mirelap\Http\Transformers\TransformerFactory;
-use Mirelap\Resources\EloquentModel;
+use Mirelap\Resources\Model;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait ResponseHelper
@@ -27,13 +27,13 @@ trait ResponseHelper
         return $factory->make($transformerClass);
     }
 
-    protected function transform(string $transformerClass, EloquentModel $model)
+    protected function transform(string $transformerClass, $model)
     {
         $transformer = $this->transformer($transformerClass);
         return $transformer->transform($model);
     }
 
-    protected function findOrFail(EloquentModel $model, $id) : EloquentModel
+    protected function findOrFail($model, $id)
     {
         try {
             return $model->findOrFail($id);
@@ -65,7 +65,7 @@ trait ResponseHelper
         return $this->getCollection($request, $this->addQueryTerm($request, $query));
     }
 
-    protected function updateResource(EloquentModel $updated, string $transformerClass, array $headers = []) : Updated
+    protected function updateResource($updated, string $transformerClass, array $headers = []) : Updated
     {
         try {
             if (!$updated->save()) {

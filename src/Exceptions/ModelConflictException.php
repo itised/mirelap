@@ -1,7 +1,6 @@
 <?php namespace Mirelap\Exceptions;
 
 use Exception;
-use Mirelap\Resources\EloquentModel;
 use RuntimeException;
 
 class ModelConflictException extends RuntimeException
@@ -12,10 +11,13 @@ class ModelConflictException extends RuntimeException
     /**
      * ModelConflictException constructor.
      *
-     * @param $current
-     * @param $update
+     * @param mixed $current the original model
+     * @param mixed $update the updated model
+     * @param string $message
+     * @param int $code
+     * @param Exception|null $previous
      */
-    public function __construct(EloquentModel $current, EloquentModel $update, string $message = '', int $code = 0, Exception $previous = null)
+    public function __construct($current, $update, string $message = '', int $code = 0, Exception $previous = null)
     {
         $this->current = $current;
         $this->update = $update;
@@ -27,12 +29,12 @@ class ModelConflictException extends RuntimeException
         parent::__construct($message, $code, $previous);
     }
 
-    public function getCurrent() : EloquentModel
+    public function getCurrent()
     {
         return $this->current;
     }
 
-    public function getUpdate() : EloquentModel
+    public function getUpdate()
     {
         return $this->update;
     }
