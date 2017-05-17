@@ -41,10 +41,15 @@ class ResponseFactory
         return new NoContent($headers);
     }
 
+    public function ok($content = null, array $headers = [])
+    {
+        return new Response($content, Response::HTTP_OK, $headers);
+    }
+
     public function item($item, string $transformerClass, array $headers = []) : Response
     {
         $content = $this->getTransformedItem($item, $transformerClass);
-        return new Response($content, Response::HTTP_OK, $headers);
+        return $this->ok($content, $headers);
     }
 
     public function collection($collection, string $transformerClass, array $headers = []) : Response
@@ -66,7 +71,7 @@ class ResponseFactory
             }
         }
 
-        return new Response($content, Response::HTTP_OK, $headers);
+        return $this->ok($content, $headers);
     }
 
     protected function getTransformedItem($content = null, string $transformerClass = null)
