@@ -27,6 +27,10 @@ abstract class TransformerAbstract
 
     public function deepTransform($item)
     {
+        if (is_null($item)) {
+            return $item;
+        }
+
         $includes = $this->getIncludes();
         $data = $this->transform($item);
 
