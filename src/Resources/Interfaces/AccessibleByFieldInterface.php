@@ -1,6 +1,6 @@
 <?php namespace Mirelap\Resources\Interfaces;
 
-interface AccessibleByField
+interface AccessibleByFieldInterface
 {
     public function findByField(string $field, $value);
 }

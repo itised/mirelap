@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Builder;
 
-interface Searchable
+interface SearchableInterface
 {
     public function scopeSearch(Builder $query, string $term): Builder;
 }
