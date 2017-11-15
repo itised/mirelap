@@ -6,4 +6,9 @@ trait AccessibleByFieldTrait
     {
         return $this->where($field, $value)->firstOrFail();
     }
+
+    public function findByCaseInsensitiveField(string $field, $value)
+    {
+        return $this->where(sprintf('UPPER(%s)', $field), strtoupper($value))->firstOrFail();
+    }
 }
