@@ -41,9 +41,14 @@ class ResponseFactory
         return new NoContent($headers);
     }
 
-    public function ok($content = null, array $headers = [])
+    public function ok($content = null, array $headers = []) : Ok
     {
-        return new Response($content, Response::HTTP_OK, $headers);
+        return new Ok($content, $headers);
+    }
+
+    public function accepted($content = null, array $headers = []) : Accepted
+    {
+        return new Accepted($content, $headers);
     }
 
     public function item($item, string $transformerClass, array $headers = []) : Response
