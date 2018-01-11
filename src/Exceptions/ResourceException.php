@@ -3,7 +3,6 @@
 use Exception;
 use Illuminate\Support\MessageBag;
 use Illuminate\Contracts\Support\MessageBag as MessageBagInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ResourceException extends HttpException implements MessageBagExceptionInterface
 {
@@ -27,7 +26,7 @@ class ResourceException extends HttpException implements MessageBagExceptionInte
             $this->errors = is_array($errors) ? new MessageBag($errors) : $errors;
         }
 
-        parent::__construct(422, $message, $previous, $headers, $code);
+        parent::__construct(422, $message ?: Response::$statusTexts[422], $previous, $headers, $code);
     }
 
     /**
@@ -48,5 +47,18 @@ class ResourceException extends HttpException implements MessageBagExceptionInte
     public function hasErrors() : bool
     {
         return !$this->errors->isEmpty();
+    }
+
+    public function render($request)
+    {
+        $response = [
+            'message' => $this->getMessage()
+        ];
+
+        if ($this->hasErrors()) {
+            $response['errors'] = $this->getErrors();
+        }
+
+        return $this->response($response);
     }
 }

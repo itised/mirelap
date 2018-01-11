@@ -1,7 +1,6 @@
 <?php namespace Mirelap\Exceptions;
 
 use Exception;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ResourceConflictException extends HttpException implements ResourceConflictExceptionInterface
 {
@@ -49,5 +48,17 @@ class ResourceConflictException extends HttpException implements ResourceConflic
         }
 
         return $changedFields;
+    }
+
+    public function render($request)
+    {
+        $response = [
+            'message' => $this->getMessage(),
+            'submitted' => $this->getSubmittedResource(),
+            'current' => $this->getCurrentResource(),
+            'changed' => $this->getChangedFields(),
+        ];
+
+        return $this->response($response);
     }
 }
