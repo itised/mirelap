@@ -52,13 +52,10 @@ class ResourceConflictException extends HttpException implements ResourceConflic
 
     public function render($request)
     {
-        $response = [
-            'message' => $this->getMessage(),
-            'submitted' => $this->getSubmittedResource(),
-            'current' => $this->getCurrentResource(),
-            'changed' => $this->getChangedFields(),
-        ];
+        $this->data['submitted'] = $this->getSubmittedResource();
+        $this->data['current'] = $this->getCurrentResource();
+        $this->data['changed'] = $this->getChangedFields();
 
-        return $this->response($response);
+        return parent::render($request);
     }
 }

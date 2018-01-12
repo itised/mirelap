@@ -51,14 +51,10 @@ class ResourceException extends HttpException implements MessageBagExceptionInte
 
     public function render($request)
     {
-        $response = [
-            'message' => $this->getMessage()
-        ];
-
         if ($this->hasErrors()) {
-            $response['errors'] = $this->getErrors();
+            $this->data['errors'] = $this->getErrors();
         }
 
-        return $this->response($response);
+        return parent::render($request);
     }
 }
